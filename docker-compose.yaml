@@ -13,7 +13,7 @@ services:
       - 7946
       - 9095
     volumes:
-      - ./loki-config.yaml:/etc/loki/config.yaml
+      - ./loki-config.yaml:/etc/loki/config.yaml:z
     depends_on:
       - minio
     networks: &loki-dns
@@ -29,7 +29,7 @@ services:
       - 7946
       - 9095
     volumes:
-      - ./loki-config.yaml:/etc/loki/config.yaml
+      - ./loki-config.yaml:/etc/loki/config.yaml:z
     depends_on:
       - minio
     networks:
@@ -37,6 +37,8 @@ services:
 
   promtail:
     image: grafana/promtail:2.5.0
+    security_opt:
+      - label:disable    
     volumes:
       - ./promtail-local-config.yaml:/etc/promtail/config.yaml:ro
       - /var/run/docker.sock:/var/run/docker.sock
@@ -63,7 +65,7 @@ services:
     ports:
       - 9000
     volumes:
-      - ./.data/minio:/data
+      - ./.data/minio:/data:z
     networks:
       - loki
 
